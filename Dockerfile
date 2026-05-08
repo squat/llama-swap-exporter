@@ -1,0 +1,24 @@
+FROM --platform=$BUILDPLATFORM docker.io/nixos/nix:2.34.6 AS builder
+
+COPY . /tmp/build
+WORKDIR /tmp/build
+
+ARG BUILDOS
+ARG BUILDARCH
+ARG TARGETOS
+ARG TARGETARCH
+ARG VERSION
+
+RUN VERSION="$VERSION" nix \
+    --extra-experimental-features "nix-command flakes" \
+    --option filter-syscalls false \
+    build --impure ".#llama-swap-exporter-cross-$TARGETOS-$TARGETARCH"
+RUN ln -s ../bin result/bin/"$BUILDOS"_"$BUILDARCH"
+FROM scratch
+
+ARG TARGETOS
+ARG TARGETARCH
+
+COPY --from=builder /tmp/build/result/bin/"$TARGETOS"_"$TARGETARCH"/llama-swap-exporter /llama-swap-exporter
+
+ENTRYPOINT ["/llama-swap-exporter"]
