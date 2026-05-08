@@ -27,7 +27,7 @@ import (
 
 func main() {
 	upstreams := flag.String("upstream", "", "Comma-separated llama-swap base URLs")
-	apiKey := flag.String("api-key", "", "Bearer token for llama-swap auth")
+	apiKey := flag.String("api-key", "", "Bearer token to authenticate against llama-swap; can be provided with the LLAMA_SWAP_EXPORTER_API_KEY environment variable")
 	metricsPath := flag.String("metrics-path", "/metrics", "HTTP path on which to serve metrics")
 	listenAddr := flag.String("web.listen-address", ":9293", "Address on which to serve metrics")
 	scrapeTimeout := flag.Duration("scrape.timeout", 10*time.Second, "Per-target scrape timeout")
@@ -37,6 +37,10 @@ func main() {
 	if *v {
 		fmt.Println(version.Version)
 		os.Exit(0)
+	}
+
+	if *apiKey == "" {
+		*apiKey, _ = os.LookupEnv("LLAMA_SWAP_EXPORTER_API_KEY")
 	}
 
 	logger := slog.Default()

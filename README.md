@@ -29,7 +29,7 @@ You can find the full list of metrics in the [METRICS.md](./docs/METRICS.md) fil
 ```txt
 Usage of llama-swap-exporter:
   -api-key string
-    	Bearer token for llama-swap auth
+    	Bearer token to authenticate against llama-swap; can be provided with the LLAMA_SWAP_EXPORTER_API_KEY environment variable
   -metrics-path string
     	HTTP path on which to serve metrics (default "/metrics")
   -scrape.timeout duration
