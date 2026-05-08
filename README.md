@@ -1,4 +1,4 @@
-# llama-swap-exporter
+# Prometheus llama-swap Exporter
 
 A Prometheus exporter for [llama-swap](https://github.com/mostlygeek/llama-swap) and the underlying [llama.cpp](https://github.com/ggml-org/llama.cpp) model servers, providing metrics for model state, token usage, etc.
 

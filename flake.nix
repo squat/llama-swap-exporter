@@ -24,6 +24,10 @@
         git-hooks-nix.flakeModule
       ];
       systems = import systems;
+      flake.nixosModules = {
+        default = self.nixosModules.llama-swap-exporter;
+        llama-swap-exporter = import ./nix/modules/nixos.nix { inherit self; };
+      };
       perSystem =
         {
           pkgs,
