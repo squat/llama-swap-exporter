@@ -310,14 +310,14 @@ func (c *llamaSwapCollector) scrapeModel(logger *slog.Logger, upstream *url.URL,
 	}
 
 	for _, family := range families {
-		if err := c.colelctMetricFamily(family, upstream, model, ch); err != nil {
+		if err := c.collectMetricFamily(family, upstream, model, ch); err != nil {
 			logger.Error("failed to collect metric family", "family", family.GetName(), "err", err)
 		}
 	}
 	return nil
 }
 
-func (c *llamaSwapCollector) colelctMetricFamily(family *protomodel.MetricFamily, upstream *url.URL, model string, ch chan<- prometheus.Metric) error {
+func (c *llamaSwapCollector) collectMetricFamily(family *protomodel.MetricFamily, upstream *url.URL, model string, ch chan<- prometheus.Metric) error {
 	name := family.GetName()
 	help := family.GetHelp()
 
