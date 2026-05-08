@@ -129,14 +129,6 @@ in
       }
     ];
 
-    warnings =
-      (lib.mkIf (cfg.firewallFilter != null && !cfg.openFirewall) [
-        "services.prometheus.exporters.llama-swap.firewallFilter has no effect unless openFirewall is true."
-      ])
-      ++ (lib.mkIf (cfg.firewallRules != null && !cfg.openFirewall) [
-        "services.prometheus.exporters.llama-swap.firewallRules has no effect unless openFirewall is true."
-      ]);
-
     systemd.services."prometheus-llama-swap-exporter" = {
       description = "Prometheus llama-swap Exporter";
       after = [ "network.target" ];
@@ -156,7 +148,7 @@ in
           Group = lib.mkIf (!enableDynamicUser) cfg.group;
           EnvironmentFile = lib.mkIf (cfg.environmentFile != null) [ cfg.environmentFile ];
 
-          ExecStart = lib.escapeSystemdExecArgs (
+          ExecStart = lib.escapeShellArgs (
             [
               (lib.getExe cfg.package)
               "--web.listen-address"
